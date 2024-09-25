@@ -92,7 +92,7 @@ void review(void)
 	}
 	while (struc)
 	{
-		printf("Имя - %s,%d", struc->inf, struc -> priority);
+		printf("Имя - %s,приоритет: %d\n", struc->inf, struc -> priority);
 		struc = struc->next;
 	}
 	return;
@@ -144,7 +144,7 @@ void del(char* name)
 		struc = struc->next;
 	}
 
-	while (struc) // проход по списку и поиск удаляемого элемента
+	while (struc) // проход по списку и пSоиск удаляемого элемента
 	{
 		if (strcmp(name, struc->inf) == 0) // если нашли, то
 		{
@@ -179,16 +179,22 @@ void del(char* name)
 int main()
 {
 	setlocale(LC_ALL, "rus");
-	char s[10];
-
-	spstore();
-	review();
-	spstore();
-	review();
-
-	/*scanf("%s", s);
-	f = find(s);
-	printf("\n Найденный элемент %s \n", f->inf);*/
+	char s[10], nn[10];
+	int i, n, m;
+	printf("Введите кол-во Ваших значений:");
+	scanf("%d", &n);
+	for (int i = 0; i < n; i++) {
+		spstore();
+		review();
+	}
+	printf("Хотите ли что-то удалить?\nЕсли да, то нажмите 1, в противном случае 0\n");
+	scanf("%d", &m);
+	if (m != 0) {
+		printf("Введите содержимое для удаления:");
+		scanf("%s", nn);
+		del(nn);
+		review();
+	}
 
 	return 0;
 }

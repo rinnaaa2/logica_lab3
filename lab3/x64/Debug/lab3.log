@@ -3,5 +3,6 @@ C:\Users\Марина\Desktop\university\2_1\ЛиОА\lab\logica_lab3\lab3\lab3.
   C:\Users\Марина\Desktop\university\2_1\ЛиОА\lab\logica_lab3\lab3\lab3.cpp(4,1):
   "_CRT_SECURE_NO_WARNINGS" ранее объявлен в командной строке
   
-C:\Users\Марина\Desktop\university\2_1\ЛиОА\lab\logica_lab3\lab3\lab3.cpp(183,7): warning C4101: s: неиспользованная локальная переменная
+C:\Users\Марина\Desktop\university\2_1\ЛиОА\lab\logica_lab3\lab3\lab3.cpp(182,7): warning C4101: s: неиспользованная локальная переменная
+C:\Users\Марина\Desktop\university\2_1\ЛиОА\lab\logica_lab3\lab3\lab3.cpp(183,6): warning C4101: i: неиспользованная локальная переменная
   lab3.vcxproj -> C:\Users\Марина\Desktop\university\2_1\ЛиОА\lab\logica_lab3\lab3\x64\Debug\lab3.exe
