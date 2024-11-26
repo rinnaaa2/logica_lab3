@@ -3,17 +3,16 @@
 #include <locale.h>
 #define _CRT_SECURE_NO_WARNINGS
 
-struct node* head = NULL, * last = NULL, * f = NULL; // указатели на первый и последний элементы списка
-int dlinna = 0;
+struct node* front = NULL, * rear = NULL; // указатели на начало и конец очереди
 
-// Функции добавления элемента, просмотра списка
-void spstore(void), review(void), del(char* name);
-struct node* find(char* name); // функция нахождения элемента
+void spstore(void), review(void), del();
+
+//struct node* find(char* name); // функция нахождения элемента
 
 struct node
 {
 	char inf[256];  // полезная информация
-	int priority;
+	//int priority;
 	struct node* next; // ссылка на следующий элемент 
 };
 
@@ -30,16 +29,13 @@ struct node* get_struct(void)
 	}
 
 	printf("Введите название объекта: \n");   // вводим данные
-	scanf("%s", s);
-	printf("Введите приоритет: ");
-	scanf("%d", &prior);
+    scanf("%s", s);
 	if (*s == 0)
 	{
 		printf("Запись не была произведена\n");
 		return NULL;
 	}
 	strcpy(p->inf, s);
-	p->priority = prior;
 	p->next = NULL;
 
 	return p;		// возвращаем указатель на созданный элемент
@@ -50,33 +46,15 @@ void spstore(void)
 {
 	struct node* p = NULL;
 	p = get_struct();
-	if (head == NULL && p != NULL || head->priority < p->priority)	// если списка нет, то устанавливаем голову списка
-	{
-		p->next = head;
-		head = p;
-		/*head = p;
-		last = p;*/
-	}
-	else if (head != NULL && p != NULL) // список уже есть, то вставляем в конец
-	{
-		for (struct node* i = head; i != NULL; i = i->next) {
-			if (i->next) {
-				if (i->next->priority < p->priority) {
-					p->next = i->next;
-					i->next = p;
-					break;
-				}
-			}
-			else
-			{
-				i->next = p;
-				last = p;
-				break;
-			}
-		}
 
-		/*last->next = p;
-		last = p;*/
+	if (p == NULL) return;
+
+	if (front == NULL) {  // если очередь пуста
+		front = rear = p;  // новый элемент становится и началом, и концом очереди
+	}
+	else {
+		rear->next = p;
+		rear = p;
 	}
 	return;
 }
@@ -84,117 +62,72 @@ void spstore(void)
 /* Просмотр содержимого списка. */
 void review(void)
 {
-	struct node* struc = head;
-	if (head == NULL)
+	struct node* struc = front;
+	if (front == NULL)
 	{
 		printf("Список пуст\n");
 		return;
 	}
 	while (struc)
 	{
-		printf("Имя - %s,приоритет: %d\n", struc->inf, struc -> priority);
+		printf("Имя - %s, \n", struc->inf);
 		struc = struc->next;
 	}
 	return;
 }
 
-/* Поиск элемента по содержимому. */
-struct node* find(char* name)
-{
-	struct node* struc = head;
-	if (head == NULL)
-	{
-		printf("Список пуст\n");
-	}
-	while (struc)
-	{
-		if (strcmp(name, struc->inf) == 0)
-		{
-			return struc;
-		}
-		struc = struc->next;
-	}
-	printf("Элемент не найден\n");
-	return NULL;
-}
+///* Поиск элемента по содержимому. */
+//struct node* find(char* name)
+//{
+//	struct node* struc = head;
+//	if (head == NULL)
+//	{
+//		printf("Список пуст\n");
+//	}
+//	while (struc)
+//	{
+//		if (strcmp(name, struc->inf) == 0)
+//		{
+//			return struc;
+//		}
+//		struc = struc->next;
+//	}
+//	printf("Элемент не найден\n");
+//	return NULL;
+//}
 
-/* Удаление элемента по содержимому. */
-void del(char* name)
+/* Удаление элемента. */
+void del()
 {
-	struct node* struc = head; // указатель, проходящий по списку установлен на начало списка
-	struct node* prev = NULL;// указатель на предшествующий удаляемому элемент
-	int flag = 0;      // индикатор отсутствия удаляемого элемента в списке
-
-	if (head == NULL) // если голова списка равна NULL, то список пуст
-	{
-		printf("Список пуст\n");
+	if (front == NULL) {
+		printf("Очередь пуста\n");
 		return;
 	}
 
-	if (strcmp(name, struc->inf) == 0) // если удаляемый элемент - первый
-	{
-		flag = 1;
-		head = struc->next; // установливаем голову на следующий элемент
-		free(struc);  // удаляем первый элемент
-		struc = head; // устанавливаем указатель для продолжения поиска
-	}
-	else
-	{
-		prev = struc;
-		struc = struc->next;
-	}
+	struct node* temp = front;  // временный указатель на первый элемент
+	front = front->next;  // сдвигаем указатель на начало очереди
 
-	while (struc) // проход по списку и пSоиск удаляемого элемента
-	{
-		if (strcmp(name, struc->inf) == 0) // если нашли, то
-		{
-			flag = 1;         // выставляем индикатор
-			if (struc->next)  // если найденный элемент не последний в списке
-			{
-				prev->next = struc->next; // меняем указатели
-				free(struc);		    // удаляем  элемент
-				struc = prev->next; // устанавливаем указатель для продолжения поиска
-			}
-			else			// если найденный элемент последний в списке
-			{
-				prev->next = NULL; // обнуляем указатель предшествующего элемента
-				free(struc);	// удаляем  элемент
-				return;
-			}
-		}
-		else // если не нашли, то
-		{
-			prev = struc; // устанавливаем указатели для продолжения поиска
-			struc = struc->next;
-		}
-	}
+	printf("Удален элемент: %s\n", temp->inf);
+	free(temp);  //удаляем
 
-	if (flag == 0)				// если флаг = 0, значит нужный элемент не найден
-	{
-		printf("Элемент не найден\n");
-		return;
+	if (front == NULL) {  // если очередь стала пустой
+		rear = NULL;  // обновляем указатель на конец
 	}
 }
 
 int main()
 {
 	setlocale(LC_ALL, "rus");
-	char s[10], nn[10];
-	int i, n, m;
-	printf("Введите кол-во Ваших значений:");
-	scanf("%d", &n);
-	for (int i = 0; i < n; i++) {
-		spstore();
-		review();
-	}
-	printf("Хотите ли что-то удалить?\nЕсли да, то нажмите 1, в противном случае 0\n");
-	scanf("%d", &m);
-	if (m != 0) {
-		printf("Введите содержимое для удаления:");
-		scanf("%s", nn);
-		del(nn);
-		review();
-	}
+	char s[10];
 
-	return 0;
+	spstore();
+	spstore();
+	review();
+	del();
+	review();
+	/*scanf("%s", s);
+	//f = find(s);
+	//printf("\n Найденный элемент %s \n", f -> inf);*/
+
+	return 0; 
 }
