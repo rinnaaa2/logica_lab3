@@ -3,9 +3,9 @@
 #include <locale.h>
 #define _CRT_SECURE_NO_WARNINGS
 
-struct node* front = NULL, * rear = NULL; // указатели на начало и конец очереди
-
-void spstore(void), review(void), del();
+//struct node* front = NULL, * rear = NULL; // указатели на начало и конец очереди
+struct node* head = NULL; //указатель на вершину
+void spstore(void), review(void), del(void);
 
 //struct node* find(char* name); // функция нахождения элемента
 
@@ -20,7 +20,6 @@ struct node* get_struct(void)
 {
 	struct node* p = NULL;
 	char s[256];
-	int prior = 0;
 
 	if ((p = (node*)malloc(sizeof(struct node))) == NULL)  // выделяем память под новый элемент списка
 	{
@@ -41,29 +40,31 @@ struct node* get_struct(void)
 	return p;		// возвращаем указатель на созданный элемент
 }
 
-/* Последовательное добавление в список элемента (в конец)*/
+/* Последовательное добавление в стек элемента */
 void spstore(void)
 {
 	struct node* p = NULL;
 	p = get_struct();
 
 	if (p == NULL) return;
+	p->next = head; //добавили на вершину
+	head = p;//подвинули указатель 
 
-	if (front == NULL) {  // если очередь пуста
-		front = rear = p;  // новый элемент становится и началом, и концом очереди
-	}
-	else {
-		rear->next = p;
-		rear = p;
-	}
+	//if (front == NULL) {  // если очередь пуста
+	//	front = rear = p;  // новый элемент становится и началом, и концом очереди
+	//}
+	//else {
+	//	rear->next = p;
+	//	rear = p;
+	//}
 	return;
 }
 
-/* Просмотр содержимого списка. */
+/* Просмотр содержимого стека. */
 void review(void)
 {
-	struct node* struc = front;
-	if (front == NULL)
+	struct node* struc = head;
+	if (head == NULL)
 	{
 		printf("Список пуст\n");
 		return;
@@ -97,22 +98,18 @@ void review(void)
 //}
 
 /* Удаление элемента. */
-void del()
+void del(void)
 {
-	if (front == NULL) {
-		printf("Очередь пуста\n");
+	if (head == NULL) {
+		printf("Стек пуст\n");
 		return;
 	}
 
-	struct node* temp = front;  // временный указатель на первый элемент
-	front = front->next;  // сдвигаем указатель на начало очереди
+	struct node* temp = head;  // временный указатель на вершину
+	head = head->next;  // сдвигаем указатель на след элемент
 
 	printf("Удален элемент: %s\n", temp->inf);
 	free(temp);  //удаляем
-
-	if (front == NULL) {  // если очередь стала пустой
-		rear = NULL;  // обновляем указатель на конец
-	}
 }
 
 int main()

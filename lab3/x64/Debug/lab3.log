@@ -3,5 +3,5 @@ C:\Users\Марина\Desktop\lab3\lab3.cpp(4,1): warning C4005: _CRT_SECURE_NO_
   C:\Users\Марина\Desktop\lab3\lab3.cpp(4,1):
   "_CRT_SECURE_NO_WARNINGS" ранее объявлен в командной строке
   
-C:\Users\Марина\Desktop\lab3\lab3.cpp(206,7): warning C4101: s: неиспользованная локальная переменная
+C:\Users\Марина\Desktop\lab3\lab3.cpp(118,7): warning C4101: s: неиспользованная локальная переменная
   lab3.vcxproj -> C:\Users\Марина\Desktop\lab3\x64\Debug\lab3.exe
